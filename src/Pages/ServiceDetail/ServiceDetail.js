@@ -1,14 +1,16 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
+import useServiceDetail from '../../hooks/useServiceDetail';
 
 const ServiceDetail = () => {
 
     const { serviceId } = useParams();
+    const [service] = useServiceDetail(serviceId);
 
     return (
         <div>
-            <h2>Service Detail page({serviceId})</h2>
-            <Link to='/checkout'>
+            <h2>You Are About To Book: ({service.name})</h2>
+            <Link to={`/checkout/${serviceId}`}>
                 <button className="btn btn-primary">Proceed Checkout</button>
             </Link>
         </div>

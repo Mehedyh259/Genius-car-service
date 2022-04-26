@@ -8,6 +8,7 @@ import Loading from '../../Shared/Loading/Loading';
 import SocialLogin from '../SocialLogin/SocialLogin';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -29,9 +30,7 @@ const Login = () => {
     ] = useSendPasswordResetEmail(auth);
 
 
-    if (user) {
-        navigate(from, { replace: true });
-    }
+
 
     if (error) {
         errorElement = <p className="text-danger">Error: {error?.message} </p>
@@ -41,11 +40,18 @@ const Login = () => {
     const emailRef = useRef('');
     const passwordRef = useRef('');
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const email = emailRef.current.value;
         const password = passwordRef.current.value;
-        signInWithEmailAndPassword(email, password);
+        await signInWithEmailAndPassword(email, password);
+        const { data } = await axios.post('https://lit-temple-73036.herokuapp.com/login', { email });
+        console.log(data);
+        localStorage.setItem('accessToken', data.accessToken);
+    }
+
+    if (user) {
+        navigate(from, { replace: true });
     }
 
     const resetPassword = async () => {
@@ -84,7 +90,7 @@ const Login = () => {
                     onClick={resetPassword} className='text-primary'>Reset Password</span></p>
 
                 <SocialLogin></SocialLogin>
-                <ToastContainer></ToastContainer>
+
 
             </div>
         </Container>
