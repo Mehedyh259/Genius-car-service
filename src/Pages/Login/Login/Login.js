@@ -9,6 +9,7 @@ import SocialLogin from '../SocialLogin/SocialLogin';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
+import useToken from '../../../hooks/useToken';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -29,7 +30,7 @@ const Login = () => {
         sending
     ] = useSendPasswordResetEmail(auth);
 
-
+    const [token] = useToken(user);
 
 
     if (error) {
@@ -45,12 +46,10 @@ const Login = () => {
         const email = emailRef.current.value;
         const password = passwordRef.current.value;
         await signInWithEmailAndPassword(email, password);
-        const { data } = await axios.post('https://lit-temple-73036.herokuapp.com/login', { email });
-        console.log(data);
-        localStorage.setItem('accessToken', data.accessToken);
+
     }
 
-    if (user) {
+    if (token) {
         navigate(from, { replace: true });
     }
 

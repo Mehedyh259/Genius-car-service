@@ -28,7 +28,7 @@ const Order = () => {
             }
         }
         getOrders();
-    }, [user])
+    }, [user]);
 
     return (
         <div>
